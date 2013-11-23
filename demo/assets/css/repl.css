@@ -1,0 +1,32 @@
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans+Mono|Droid+Sans);
+
+html, body {
+    margin: 0;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.output-wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+html.hide-output .output-wrapper {
+    display: none;
+}
+
+html.hide-output .CodeMirror {
+}
+
+.error {
+    color: red;
+}
+
+.dropdown-menu {
+    width: 250px;
+}
+
+.dropdown-menu input {
+    display: none;
+}

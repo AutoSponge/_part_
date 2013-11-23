@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>_part_.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>_part_.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p><code>_part_</code>, a meta utility, creates utility methods for
+functional programming from traditional object-methods.
+<code>_part_</code> provides a simple interface for creating
+lazy (partial application) functions.</p>
+<p>Functions created by <code>_part_</code>&#39;s <code>_create</code> and <code>create_</code> use an
+underscore (<code>_</code>) to denote which argument(s) it expects next.  If the
+underscore precedes the function name, as in <code>_map</code>, the function
+expects a receiver/context object first. It may help to think of
+what normally appears to the left of the <code>map</code> function:</p>
+<p><code>arr.map(fn)</code> == <code>_map(arr)(fn)</code></p>
+<p>If the underscore comes after the function name, as in <code>map_</code>,
+then the function expects predicate arguments first and the
+receiver in the invocation of the returned function.</p>
+<p><code>arr.map(fn)</code> == <code>map_(fn)(arr)</code></p>
+<p>Because both versions partially apply arguments, any argument
+that is not the method receiver can vary position.</p>
+<p><code>arr.map(fn)</code> == <code>map_(fn)(arr)</code> == <code>map_()(arr, fn)</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="function"><span class="keyword">function</span> <span class="params">( GLOBAL, $ )</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="-_create">_create</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p><code>_create</code> takes a function and returns a function that
+will partially apply arguments. The resulting function expects
+a receiver as its first argument.</p>
+<p><code>_create(f) -&gt; _part(a, b) -&gt; part_(c, d) = f.apply(a, [b,c,d])</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $._create = <span class="function"><span class="keyword">function</span> <span class="params">( fn )</span> {</span>
+
+        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">_part</span><span class="params">( receiver, ...args1 )</span> {</span>
+
+            <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">part_</span><span class="params">( ...args2 )</span> {</span>
+
+                <span class="keyword">return</span> fn.apply( receiver, [...args1, ...args2] );
+
+            };
+
+        };
+
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h2 id="create-_">create_</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p><code>create_</code> takes a function and returns a function that
+will partially apply arguments. The resulting function expects
+takes arguments and returns a function which expects a receiver
+as its first argument.</p>
+<p><code>create_(f) -&gt; part_(a, b) -&gt; _part(c, d) = f.apply(c, [a,b,d])</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $.create_ = <span class="function"><span class="keyword">function</span> <span class="params">( fn )</span> {</span>
+
+        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">part_</span><span class="params">( ...args1 )</span> {</span>
+
+            <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">_part</span><span class="params">( receiver, ...args2 )</span> {</span>
+
+                <span class="keyword">return</span> fn.apply( receiver, [...args1, ...args2] );
+
+            };
+
+        };
+
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h2 id="augment">augment</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p><code>augment</code> takes a string name and a function argument and creates two
+partial application, object-method versions of the given function
+for the receiver object.</p>
+<p>Example:</p>
+<pre><code>var namespace = {};
+_part_.augment.call(namespace, &quot;map&quot;, Array.prototype.map);
+typeof namespace._map === &quot;function&quot;; //true
+typeof namespace.map_ === &quot;function&quot;; //true</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $.augment = <span class="function"><span class="keyword">function</span> <span class="params">( name, fn )</span> {</span>
+
+        <span class="keyword">this</span>[<span class="string">"_"</span> + name] = $._create( fn );
+
+        <span class="keyword">this</span>[name + <span class="string">"_"</span>] = $.create_( fn );
+
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h2 id="borrow">borrow</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p><code>borrow</code> takes a source object and a string name
+and <code>augment</code>s the receiver object.  This pattern works well for
+copying multiple methods to a namespace.</p>
+<p>Example:</p>
+<pre><code>var namespace = {};
+_part_
+  .borrow
+  .call(namespace, Array.prototype, &quot;reduce&quot;);
+typeof namespace._reduce === &quot;function&quot;; //true
+typeof namespace.reduce_ === &quot;function&quot;; //true</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $.borrow = <span class="function"><span class="keyword">function</span> <span class="params">( source, name )</span> {</span>
+
+        $.augment.call( <span class="keyword">this</span>, name, source[name] );
+
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <h2 id="-_augment-and-augment-_">_augment and augment_</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Example:</p>
+<pre><code>//make a _each and each_ methods from forEach
+_augment(namespace)(&quot;each&quot;, Array.prototype.forEach);
+
+//make a _each and each_ methods from forEach
+_part_.augment_(&quot;each&quot;, Array.prototype.forEach)(namespace);
+
+//or
+_part_.augment_(&quot;each&quot;)(namespace, Array.prototype.forEach);</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $.augment( <span class="string">"augment"</span>, $.augment );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <h2 id="-_borrow-and-borrow-_">_borrow and borrow_</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Example:</p>
+<pre><code>//make six methods from Array methods
+[&quot;map&quot;,
+ &quot;reduce&quot;,
+ &quot;slice&quot;
+].map(_borrow(namespace)(Array.prototype));
+
+//make a _each and each_ methods from forEach
+_part_.borrow_(Array.prototype, &quot;forEach&quot;, &quot;each&quot;)(namespace);
+
+//or
+_part_.borrow_(Array.prototype, &quot;forEach&quot;)(namespace, &quot;each&quot;);</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $.augment( <span class="string">"borrow"</span>, $.borrow );
+
+    <span class="keyword">if</span> ( <span class="keyword">typeof</span> module === <span class="string">"undefined"</span>) {
+
+        GLOBAL._part_ = $;
+
+    } <span class="keyword">else</span> {
+
+        module.exports = $;
+
+    }
+
+}( <span class="keyword">this</span>, {} ));</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
