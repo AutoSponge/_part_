@@ -19,14 +19,33 @@ html.hide-output .output-wrapper {
 html.hide-output .CodeMirror {
 }
 
+.eval, .source-map {
+    background-color: white;
+    border: none;
+}
 .error {
     color: red;
+    background-color: white;
+    border: none;
 }
 
 .dropdown-menu {
     width: 250px;
 }
 
-.dropdown-menu input {
-    display: none;
+#options_menu input {
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 0;
+}
+
+#options_menu label {
+    font-weight: normal;
+    margin-bottom: 0;
+}
+
+#options_menu hr {
+    border-color: darkgrey;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }

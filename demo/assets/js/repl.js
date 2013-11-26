@@ -13,7 +13,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-(function() {
+(function(global) {
     'use strict';
 
     // Do not show source maps by default.
@@ -32,29 +32,13 @@
         lineNumbers: true,
         theme: "ambiance"
     });
-//    var outputCheckbox = document.querySelector('input.output');
-//    var output = CodeMirror.fromTextArea(
-//      document.querySelector('textarea.output'), {
-//        lineNumbers: true,
-//        readOnly: true
-//      });
-//  output.getWrapperElement().classList.add('output-wrapper');
-//    var evalCheckbox = document.querySelector('input.eval');
+
     var evalElement = document.querySelector('pre.eval');
     var errorElement = document.querySelector('pre.error');
     var sourceMapElement = document.querySelector('pre.source-map');
 
     if (location.hash)
         input.setValue(decodeURIComponent(location.hash.slice(1)));
-
-//    evalCheckbox.addEventListener('click', function(e) {
-//        evalElement.hidden = !evalCheckbox.checked;
-//    }, false);
-
-//  outputCheckbox.addEventListener('click', function(e) {
-//    document.documentElement.classList[
-//        outputCheckbox.checked ? 'remove' : 'add']('hide-output');
-//  }, false);
 
     /**
      * debounce time = min(tmin + [func's execution time], tmax).
@@ -104,7 +88,6 @@
 
     function compile() {
         hasError = false;
-//    output.setValue('');
         errorElement.textContent = sourceMapElement.textContent = '';
 
         var reporter = new ErrorReporter();
@@ -135,16 +118,13 @@
             }
 
             var source = ProjectWriter.write(res, options);
-//      output.setValue(source);
 
-//            if (evalCheckbox.checked) {
-                try {
-                    evalElement.textContent = ('global', eval)(source);
-                } catch(ex) {
-                    hasError = true;
-                    errorElement.textContent = ex;
-                }
-//            }
+            try {
+                evalElement.textContent = ('global', eval)(source);
+            } catch(ex) {
+                hasError = true;
+                errorElement.textContent = ex;
+            }
 
             if (traceur.options.sourceMaps) {
                 var renderedMap = renderSourceMap(source, options.sourceMap);
@@ -205,12 +185,6 @@
 
     createOptions();
 
-    function rebuildOptions() {
-        var optionsDiv = document.querySelector('.traceur-options');
-        optionsDiv.innerHTML = '';
-        createOptions();
-    }
-
     function renderSourceMap(source, sourceMap) {
         var consumer = new SourceMapConsumer(sourceMap);
         var lines = source.split('\n');
@@ -226,34 +200,172 @@
         return 'SourceMap:\n' + lineNumberTable.join('\n');
     }
 
-    var codeCur = 0;
-    var code = 'UUDDLRLRBA'.split('').map(function(k) {
-        return {'U':38, 'D':40, 'L':37, 'R':39, 'A':65, 'B':66}[k];
-    });
+    global.cm = input;
 
-    document.addEventListener('keyup', function(e) {
-        if (e.keyCode !== code[codeCur++])
-            codeCur = +(e.keyCode === code[0]);
-        if (codeCur === code.length) {
-            var optionsDiv = document.querySelector('.options');
-            optionsDiv.hidden = false;
-            optionsDiv.classList.add('god0');
-            window.setInterval(updateTransition, 500);
-            showAllOpts = !showAllOpts;
-            showMax = 0;
-            rebuildAnimate();
-        }
-    });
+}(this));
 
-    function updateTransition() {
-        var optionsDiv;
-        for (var i = 0; i < 2; i++) {
-            if (optionsDiv = document.querySelector('.god' + i)) {
-                optionsDiv.classList.remove('god' + i);
-                optionsDiv.classList.add('god' + (i + 1) % 2);
-                break;
+(function () {
+    var examples = document.getElementById("examples");
+    var lists = ["arrayMethods", "functionMethods", "stringMethods"];
+    var elms = {};
+    var cache = {};
+    var config = {
+        arrayMethods: [
+            {
+                title: "Create forEach global",
+                body: function () {
+                    /*
+_part_._borrow( this )( Array.prototype, "forEach" );
+                     */
+                }
+            },
+            {
+                title: "Create forEach global (aliased as each)",
+                body: function () {
+                    /*
+_part_._augment( this )( "each", Array.prototype.forEach );
+                     */
+                }
+            },
+            {
+                title: "Create forEach in util",
+                body: function () {
+                    /*
+var util = {};
+util.addPartialMethods = _part_.augment;
+util.addPartialMethods( "each", Array.prototype.forEach );
+                     */
+                }
+            },
+            {
+                title: "Create all Array methods as globals",
+                body: function () {
+                    /*
+[
+    "concat", "every", "filter", "forEach", "join",
+    "lastIndexOf", "map", "push", "pop", "reduce",
+    "reduceRight", "reverse", "shift", "slice",
+    "some", "sort", "splice", "unshift"
+].forEach( _part_._borrow( this, Array.prototype ) );
+                     */
+                }
+            },
+            {
+                title: "example: pipeline (ES6)",
+                body: function () {
+                    /*
+_part_._borrow( this )( Array.prototype, "reduce" );
+var pipeline = reduce_(function (a, b) {
+    return b && function (x) {
+        return b(a(x));
+    } || a;
+});
+var myProcess = pipeline([
+    (n) => n + 1,
+    (n) => n * 2,
+    (n) => n * n
+]);
+myProcess(2);
+                     */
+                }
+            },
+            {
+                title: "example: map/reduce (ES6)",
+                body: function () {
+                    /*
+_part_._borrow( this, Array.prototype )( "map" );
+_part_._borrow( this, Array.prototype )( "reduce" );
+var add = (a=0, b=0) => +a + +b;
+var applyTax = (amount) => ( (amount * 1065) / 1000).toFixed( 2 );
+var sum = reduce_( add );
+var applyTaxes = map_( applyTax );
+sum( applyTaxes( [5, 11.12, 42.03] ) );
+                     */
+                }
+            },
+            {
+                title: "example: map (ES6)",
+                body: function () {
+                    /*
+_part_._borrow( this )( Array.prototype, "map" );
+var double = map_( (n) => n * 2 );
+var myNumbers = [1,2,3];
+double( myNumbers );
+                     */
+                }
             }
-        }
-    }
+        ],
+        functionMethods: [
+            {
+                title: "Create function globals",
+                body: function () {
+                    /*
+[
+    "call", "apply", "bind"
+].forEach( _part_._borrow( this, Function.prototype ) );
+                    */
+                }
+            }
+        ],
+        stringMethods: [
+            {
+                title: "example: concat pipeline",
+                body: function () {
+                    /*
+_part_._borrow( this )( String.prototype, "concat" );
+_part_._borrow( this )( Array.prototype, "reduce" );
+_part_._borrow( this )( Array.prototype, "map" );
+_part_._borrow( this )( Array.prototype, "join" );
+var pipeline = reduce_(function (a, b) {
+    return b && function (x) {
+        return b(a(x));
+    } || a;
+});
+var makeOrderedList = pipeline( [
+    map_( pipeline( [
+        _concat("<li>"),
+        concat_("</li>")
+    ] ) ),
+    join_(""),
+    _concat("<ol>"),
+    concat_("</ol>")] );
+makeOrderedList( ["one", "two", "three"] );
+                    */
+                }
+            }
+        ]
+    };
 
-})();
+    //build lists
+    lists.forEach(function (name) {
+        elms[name] = document.getElementById( name );
+    });
+
+    lists.forEach( function (namespace) {
+        config[namespace].forEach(function (e, i) {
+            var str = e.body
+                .toString()
+                .replace(/[^\*]+\*/m, "")
+                .split("*/")[0]
+                .split("\n")
+                .filter(function (s) {
+                    return !!s && !s.match(/^\s+$/);
+                })
+                .join("\n");
+
+            cache[e.title] = str;
+            $('<li><a href="#">' + e.title + '</a></li>' ).appendTo(elms[namespace]);
+        });
+    } );
+
+    //add handlers
+    $("button[type=reset]" ).on("click", function () {
+        window.location.href = window.location.href.split("#")[0];
+    });
+
+    $(examples).on("click", function (e) {
+        cm.setValue( cache[e.target.textContent] );
+        e.preventDefault();
+    });
+
+}());
