@@ -26,3 +26,7 @@ map_( function (n) { return n + 1; } )( [1,2,3] ); // [2,3,4]
 See the [docs](https://rawgithub.com/AutoSponge/_part_/master/build/docs/_part_.html).
 
 Try the [repl](https://rawgithub.com/AutoSponge/_part_/master/demo/repl.html).
+
+## Todo
+
+1. Create some node examples
