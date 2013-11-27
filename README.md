@@ -6,7 +6,7 @@ applied functions.
 
 ```
 //typical receiver-method-arguments pattern
-[1,2,3].map( function (n) { return n + 1; }); // [2,3,4]
+[1,2,3].map( function (n) { return n + 1; } ); // [2,3,4]
 ```
 
 The "left-part" functions prepend the method name with an underscore and expect the receiver as
@@ -20,7 +20,7 @@ The "right-part" functions suffix the method name with an underscore and expect 
 the first argument in the function returned by the first invocation.
 
 ```
-map_( function (n) { return n + 1; } )( [1,2,3]] ); // [2,3,4]
+map_( function (n) { return n + 1; } )( [1,2,3] ); // [2,3,4]
 ```
 
 See the [docs](https://rawgithub.com/AutoSponge/_part_/master/build/docs/_part_.html).
