@@ -57,6 +57,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+                <li><a data-toggle="modal" data-target="#about-modal">About</a></li>
                 <li class="dropdown" id="examples_menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
                     <ul id="examples" class="dropdown-menu">
@@ -75,6 +76,37 @@
         </div><!--/.nav-collapse -->
     </div>
 </div>
+
+<div class="modal fade" id="about-modal" tabindex="-1" role="dialog" aria-labelledby="about" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">About repl</h4>
+            </div>
+            <div class="modal-body">
+                <h3>repl (read-eval-print-loop)</h3>
+                <p>
+                    This repl was built with <a href="https://github.com/google/traceur-compiler">traceur-compiler</a>,
+                    and <a href="http://codemirror.net/2/">CodeMirror2</a> so you can use ES6 features now!
+                    Control the available ES6 options from the "Options" menu.
+                    By default, the really cool, stable stuff is already enabled--you're welcome.
+                </p>
+                <p>
+                    The "Examples" menu contains sample code I made to either get you started with your own
+                    experiments or let you bask in the glory of my creation.
+                </p>
+                <p>
+                    The "Reset" button (because there should always be a big, red button) clears the repl and repl
+                    history.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <div class="container theme-showcase">
 
@@ -110,7 +142,6 @@
 </div>
 
 </div> <!-- /container -->
-
 
 <!-- Bootstrap core JavaScript
 ================================================== -->

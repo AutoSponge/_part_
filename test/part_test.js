@@ -24,7 +24,7 @@ exports["_part_ has the correct interface"] = function ( test ) {
 
 };
 
-exports["_create function binds receiver and partially applies arguments"] = function ( test ) {
+exports["_create method binds receiver and partially applies arguments"] = function ( test ) {
 
     var a = "a", b = "b", c = "c", obj = {};
 
@@ -56,7 +56,7 @@ exports["_create function binds receiver and partially applies arguments"] = fun
 
 };
 
-exports["create_ function partially applies arguments and binds receiver and additional arguments"] = function ( test ) {
+exports["create_ method partially applies arguments and binds receiver and additional arguments"] = function ( test ) {
 
     var arr = [];
 
@@ -83,6 +83,64 @@ exports["create_ function partially applies arguments and binds receiver and add
     test.ok( arr[1] === 7 );
 
     test.ok( arr[2] === 11 );
+
+    test.done();
+
+};
+
+exports["augment creates left-part and right-part methods"] = function ( test ) {
+
+    var obj = {},
+        arr = [1,2,3];
+
+    function sum( a, b ) {
+
+        return a + b;
+
+    }
+
+    _part_.augment.call( obj, "reduce", Array.prototype.reduce );
+
+    test.ok( obj._reduce( arr )( sum ) === 6 );
+
+    test.ok( obj._reduce( arr, sum )( 1 ) === 7 );
+
+    test.ok( obj._reduce( arr )( sum, 1 ) === 7 );
+
+    test.ok( obj.reduce_( sum )( arr ) === 6 );
+
+    test.ok( obj.reduce_( sum, 1 )( arr ) === 7 );
+
+    test.ok( obj.reduce_( sum )( arr, 1 ) === 7 );
+
+    test.done();
+
+};
+
+exports["borrow creates left-part and right-part methods"] = function ( test ) {
+
+    var obj = {},
+        arr = [1,2,3];
+
+    function sum( a, b ) {
+
+        return a + b;
+
+    }
+
+    _part_.borrow.call( obj, Array.prototype, "reduce" );
+
+    test.ok( obj._reduce( arr )( sum ) === 6 );
+
+    test.ok( obj._reduce( arr, sum )( 1 ) === 7 );
+
+    test.ok( obj._reduce( arr )( sum, 1 ) === 7 );
+
+    test.ok( obj.reduce_( sum )( arr ) === 6 );
+
+    test.ok( obj.reduce_( sum, 1 )( arr ) === 7 );
+
+    test.ok( obj.reduce_( sum )( arr, 1 ) === 7 );
 
     test.done();
 

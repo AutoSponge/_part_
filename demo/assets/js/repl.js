@@ -205,6 +205,9 @@
 }(this));
 
 (function () {
+    //even though it would be cool, resist the tempation to use _part_ here
+    //so it doesn't leak into the repl
+
     var examples = document.getElementById("examples");
     var lists = ["arrayMethods", "functionMethods", "stringMethods"];
     var elms = {};
@@ -212,7 +215,23 @@
     var config = {
         arrayMethods: [
             {
-                title: "Create forEach global",
+                title: "Create map_ (function-first style)",
+                body: function () {
+                    /*
+var map_ = _part_.create_( Array.prototype.map );
+                     */
+                }
+            },
+            {
+                title: "Create _map (receiver-first style)",
+                body: function () {
+                    /*
+var _map = _part_._create( Array.prototype.map );
+                     */
+                }
+            },
+            {
+                title: "Create forEach_ and _forEach globals",
                 body: function () {
                     /*
 _part_._borrow( this )( Array.prototype, "forEach" );
@@ -220,7 +239,7 @@ _part_._borrow( this )( Array.prototype, "forEach" );
                 }
             },
             {
-                title: "Create forEach global (aliased as each)",
+                title: "Create each_ and _each globals",
                 body: function () {
                     /*
 _part_._augment( this )( "each", Array.prototype.forEach );
@@ -231,9 +250,10 @@ _part_._augment( this )( "each", Array.prototype.forEach );
                 title: "Create forEach in util",
                 body: function () {
                     /*
-var util = {};
-util.addPartialMethods = _part_.augment;
-util.addPartialMethods( "each", Array.prototype.forEach );
+var util = {
+    addPartMethods: _part_.augment
+};
+util.addPartMethods( "each", Array.prototype.forEach );
                      */
                 }
             },
@@ -305,9 +325,33 @@ double( myNumbers );
 ].forEach( _part_._borrow( this, Function.prototype ) );
                     */
                 }
+            },
+            {
+                title: "example: logger",
+                body: function () {
+                    /*
+_part_._borrow( this, Function.prototype )( "call" );
+var log = _call( console.log, console );
+log("testing", 1, 2, 3); //check the console!
+                     */
+                }
             }
         ],
         stringMethods: [
+            {
+                title: "Create all String methods as globals",
+                body: function () {
+                    /*
+[
+    "quote", "substring", "toLowerCase", "toUpperCase", "charAt",
+    "charCodeAt", "indexOf", "lastIndexOf", "startsWith", "endsWith",
+    "trim", "trimLeft", "trimRight", "toLocaleLowerCase",
+    "toLocaleUpperCase", "localeCompare", "match", "search",
+    "replace", "split", "substr", "concat", "slice"
+].forEach( _part_._borrow( this, String.prototype ) );
+                     */
+                }
+            },
             {
                 title: "example: concat pipeline",
                 body: function () {
