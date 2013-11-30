@@ -4,7 +4,7 @@
 This micro library encourages functional programming by making native methods available as partially
 applied functions.
 
-```
+```javascript
 //typical receiver-method-arguments pattern
 [1,2,3].map( function (n) { return n + 1; } ); // [2,3,4]
 ```
@@ -12,14 +12,14 @@ applied functions.
 The "left-part" functions prepend the method name with an underscore and expect the receiver as
 the first argument in the first invocation.
 
-```
+```javascript
 _map( [1,2,3] )( function (n) { return n + 1; } ); // [2,3,4]
 ```
 
 The "right-part" functions suffix the method name with an underscore and expect the receiver as
 the first argument in the function returned by the first invocation.
 
-```
+```javascript
 map_( function (n) { return n + 1; } )( [1,2,3] ); // [2,3,4]
 ```
 
@@ -27,6 +27,74 @@ See the [docs](https://rawgithub.com/AutoSponge/_part_/master/build/docs/_part_.
 
 Try the [repl](https://rawgithub.com/AutoSponge/_part_/master/demo/repl.html).
 
-## Todo
+## Getting Started
 
-1. Create some node examples
+See the following examples of how to include \_part\_.
+
+### Custom namespace;
+
+```javascript
+// NodeJS example
+var _part_ = require( "./build/src/_part_" );
+var util = {};
+_part_._borrow( util )( Array.prototype, "reduce" );
+function add( a, b ) { return +a + +b; }
+util.sum = util.reduce_( add );
+module.exports = util;
+```
+
+```html
+<!-- Browser example -->
+<script src="build/_part_.min.js">
+<script>
+(function (global, util) {
+  function add( a, b ) { return +a + +b; }
+  _part_._borrow( util )( Array.prototype, "reduce" );
+  util.sum = util.reduce_( add );
+  global.util = util;
+}(this, {}));
+</script>
+
+```
+
+### Node, extending the \_part\_ namespace;
+
+```javascript
+// NodeJS example
+var _part_ = require( "./build/src/_part_" );
+_part_._borrow( util )( Array.prototype, "reduce" );
+function add( a, b ) { return +a + +b; }
+var sum = util.reduce_( add );
+```
+
+```html
+<!-- Browser example -->
+<script src="build/_part_.min.js">
+<script>
+function add( a, b ) { return +a + +b; }
+_part_.borrow( Array.prototype, "reduce" );
+var sum = _part_.reduce_( add );
+</script>
+
+```
+
+### Node, non-namespaced utilities
+
+```javascript
+// NodeJS example
+var _part_ = require("./build/src/_part_");
+var reduce_ = _part_.create_(Array.prototype.reduce);
+function add( a, b ) { return +a + +b; }
+var sum = reduce_( add );
+```
+
+```html
+<!-- Browser example -->
+<script src="build/_part_.min.js">
+<script>
+function add( a, b ) { return +a + +b; }
+_part_._borrow( this )( Array.prototype, "reduce" );
+var sum = reduce_( add );
+</script>
+
+```
