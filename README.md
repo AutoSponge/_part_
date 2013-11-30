@@ -57,7 +57,7 @@ module.exports = util;
 
 ```
 
-### Node, extending the \_part\_ namespace;
+### Extending the \_part\_ namespace;
 
 ```javascript
 // NodeJS example
@@ -78,7 +78,7 @@ var sum = _part_.reduce_( add );
 
 ```
 
-### Node, non-namespaced utilities
+### Non-namespaced utilities
 
 ```javascript
 // NodeJS example
