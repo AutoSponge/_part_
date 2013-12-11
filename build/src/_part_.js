@@ -12,20 +12,29 @@ var $__toObject = function(value) {
   return rv;
 };
 (function(GLOBAL, $) {
-  $._create = function(fn) {
-    return function _part(receiver) {
-      for (var args1 = [], $__0 = 1; $__0 < arguments.length; $__0++) args1[$__0 - 1] = arguments[$__0];
+  $.papply = function(fn, receiver) {
+    return function part_() {
+      for (var args1 = [], $__0 = 0; $__0 < arguments.length; $__0++) args1[$__0] = arguments[$__0];
       return function part_() {
         for (var args2 = [], $__1 = 0; $__1 < arguments.length; $__1++) args2[$__1] = arguments[$__1];
         return fn.apply(receiver, $__spread(args1, args2));
       };
     };
   };
+  $._create = function(fn) {
+    return function _part(receiver) {
+      for (var args1 = [], $__1 = 1; $__1 < arguments.length; $__1++) args1[$__1 - 1] = arguments[$__1];
+      return function part_() {
+        for (var args2 = [], $__0 = 0; $__0 < arguments.length; $__0++) args2[$__0] = arguments[$__0];
+        return fn.apply(receiver, $__spread(args1, args2));
+      };
+    };
+  };
   $.create_ = function(fn) {
     return function part_() {
-      for (var args1 = [], $__1 = 0; $__1 < arguments.length; $__1++) args1[$__1] = arguments[$__1];
+      for (var args1 = [], $__0 = 0; $__0 < arguments.length; $__0++) args1[$__0] = arguments[$__0];
       return function _part(receiver) {
-        for (var args2 = [], $__0 = 1; $__0 < arguments.length; $__0++) args2[$__0 - 1] = arguments[$__0];
+        for (var args2 = [], $__1 = 1; $__1 < arguments.length; $__1++) args2[$__1 - 1] = arguments[$__1];
         return fn.apply(receiver, $__spread(args1, args2));
       };
     };

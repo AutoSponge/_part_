@@ -24,6 +24,27 @@
 
 (function ( GLOBAL, $ ) {
 
+    // papply
+    // ------
+
+    // `papply` takes a function and an optional receiver and returns a
+    // function that will partially apply arguments.
+
+    // `papply(f, a) -> part__(b) -> part_(c, d) = f.apply(a, [b,c,d])`
+    $.papply = function ( fn, receiver ) {
+
+        return function part_( ...args1 ) {
+
+            return function part_( ...args2 ) {
+
+                return fn.apply( receiver, [...args1, ...args2] );
+
+            };
+
+        };
+
+    };
+
     // \_create
     // --------
 

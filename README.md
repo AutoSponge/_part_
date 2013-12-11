@@ -25,7 +25,7 @@ map_( function (n) { return n + 1; } )( [1,2,3] ); // [2,3,4]
 
 See the [docs](https://rawgithub.com/AutoSponge/_part_/master/build/docs/_part_.html).
 
-Try the [repl](https://rawgithub.com/AutoSponge/_part_/master/demo/repl.html).
+Try the [live demo](https://rawgithub.com/AutoSponge/_part_/master/demo/repl.html).
 
 ## Getting Started
 
@@ -98,3 +98,7 @@ var sum = reduce_( add );
 </script>
 
 ```
+
+## Updates
+
+- 2013-12-11 - Added `papply` to the `_part_` namespace.

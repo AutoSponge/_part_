@@ -49,3 +49,9 @@ html.hide-output .CodeMirror {
     margin-top: 3px;
     margin-bottom: 3px;
 }
+
+body.dark, body.dark h1 {
+    background-color: #000000;
+    color: #ffffff;
+}
+

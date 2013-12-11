@@ -209,7 +209,7 @@
     //so it doesn't leak into the repl
 
     var examples = document.getElementById("examples");
-    var lists = ["arrayMethods", "functionMethods", "stringMethods"];
+    var lists = ["arrayMethods", "functionMethods", "stringMethods", "genericMethods"];
     var elms = {};
     var cache = {};
     var config = {
@@ -274,7 +274,7 @@ util.addPartMethods( "each", Array.prototype.forEach );
                 title: "example: pipeline (ES6)",
                 body: function () {
                     /*
-_part_._borrow( this )( Array.prototype, "reduce" );
+var reduce_ = _part_.create_( Array.prototype.reduce );
 var pipeline = reduce_(function (a, b) {
     return b && function (x) {
         return b(a(x));
@@ -293,8 +293,8 @@ myProcess(2);
                 title: "example: map/reduce (ES6)",
                 body: function () {
                     /*
-_part_._borrow( this, Array.prototype )( "map" );
-_part_._borrow( this, Array.prototype )( "reduce" );
+var map_ = _part_.create_( Array.prototype.map );
+var reduce_ = _part_.create_( Array.prototype.reduce );
 var add = (a=0, b=0) => +a + +b;
 var applyTax = (amount) => ( (amount * 1065) / 1000).toFixed( 2 );
 var sum = reduce_( add );
@@ -307,7 +307,7 @@ sum( applyTaxes( [5, 11.12, 42.03] ) );
                 title: "example: map (ES6)",
                 body: function () {
                     /*
-_part_._borrow( this )( Array.prototype, "map" );
+var map_ = _part_.create_( Array.prototype.map );
 var double = map_( (n) => n * 2 );
 var myNumbers = [1,2,3];
 double( myNumbers );
@@ -330,9 +330,22 @@ double( myNumbers );
                 title: "example: logger",
                 body: function () {
                     /*
-_part_._borrow( this, Function.prototype )( "call" );
+var _call = _part_._create( Function.prototype.call );
 var log = _call( console.log, console );
 log("testing", 1, 2, 3); //check the console!
+                     */
+                }
+            },
+            {
+                title: "example: curry",
+                body: function () {
+                    /*
+var curry = _part_._create( Function.prototype.bind );
+var add = function ( a, b ) { return +a + +b; }
+var addN = curry( add, null ); // we must pass null as the receiver
+var add1 = addN( 1 );
+add1( 2 );
+
                      */
                 }
             }
@@ -357,24 +370,48 @@ log("testing", 1, 2, 3); //check the console!
                 body: function () {
                     /*
 _part_._borrow( this )( String.prototype, "concat" );
-_part_._borrow( this )( Array.prototype, "reduce" );
-_part_._borrow( this )( Array.prototype, "map" );
-_part_._borrow( this )( Array.prototype, "join" );
-var pipeline = reduce_(function (a, b) {
-    return b && function (x) {
-        return b(a(x));
+["reduce", "map", "join"].forEach( _part_._borrow( this, Array.prototype ) );
+var pipeline = reduce_( function ( a, b ) {
+    return b && function ( x ) {
+        return b( a( x ) );
     } || a;
-});
+} );
 var makeOrderedList = pipeline( [
     map_( pipeline( [
-        _concat("<li>"),
-        concat_("</li>")
+        _concat( "\t<li>" ),
+        concat_( "</li>\n" )
     ] ) ),
-    join_(""),
-    _concat("<ol>"),
-    concat_("</ol>")] );
+    join_( "" ),
+    _concat( "<ol>\n" ),
+    concat_( "</ol>" )
+] );
 makeOrderedList( ["one", "two", "three"] );
                     */
+                }
+            }
+        ],
+        genericMethods: [
+            {
+                title: "'curry' add",
+                body: function () {
+                    /*
+var addN = _part_.papply( function add( a, b ) {
+    return +a + +b;
+} );
+var add1 = addN( 1 );
+add1( 2 );
+                    */
+                }
+            },
+            {
+                title: "'curry' DOM methods",
+                body: function () {
+                    /*
+var setBody = _part_.papply( Element.prototype.setAttribute, document.body );
+var setBodyClass = setBody( "class" );
+setBodyClass( "dark" ); // who turned out the lights?!
+//setBodyClass( "" ); // uncomment to fix it
+                     */
                 }
             }
         ]

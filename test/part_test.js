@@ -2,9 +2,10 @@ var _part_ = require( "../build/src/_part_" );
 
 exports["_part_ has the correct interface"] = function ( test ) {
 
-    test.expect( 8 );
+    test.expect( 9 );
 
     [
+        "papply",
         "create_",
         "_create",
         "augment",
@@ -19,6 +20,43 @@ exports["_part_ has the correct interface"] = function ( test ) {
             test.ok( typeof _part_[name] === "function", name + " should be a function" );
 
         });
+
+    test.done();
+
+};
+
+exports["papply method binds receiver and partially applies arguments"] = function ( test ) {
+
+    var add = function ( a, b ) {
+
+        return +a + +b;
+
+    };
+
+    var addN = _part_.papply( add );
+
+    var add1 = addN( 1 );
+
+    test.expect( 2 );
+
+    test.ok( add1( 2 ) === 3 );
+
+    var equasion = {
+        dividend: 15,
+        divisor: 3
+    };
+
+    var operation = function ( operator, operandA, operandB ) {
+
+        return (Function("return " + this[operandA] + operator + this[operandB] + ";"))();
+
+    };
+
+    var doMaths = _part_.papply(operation, equasion);
+
+    var divide = doMaths( "/" );
+
+    test.ok( divide( "dividend", "divisor" ) === 5 );
 
     test.done();
 
