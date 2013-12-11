@@ -33,7 +33,7 @@
     // `papply(f, a) -> part__(b) -> part_(c, d) = f.apply(a, [b,c,d])`
     $.papply = function ( fn, receiver ) {
 
-        return function part_( ...args1 ) {
+        return function part__( ...args1 ) {
 
             return function part_( ...args2 ) {
 

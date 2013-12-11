@@ -13,7 +13,7 @@ var $__toObject = function(value) {
 };
 (function(GLOBAL, $) {
   $.papply = function(fn, receiver) {
-    return function part_() {
+    return function part__() {
       for (var args1 = [], $__0 = 0; $__0 < arguments.length; $__0++) args1[$__0] = arguments[$__0];
       return function part_() {
         for (var args2 = [], $__1 = 0; $__1 < arguments.length; $__1++) args2[$__1] = arguments[$__1];
