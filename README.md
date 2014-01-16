@@ -29,6 +29,10 @@ Try the [live demo](https://rawgithub.com/AutoSponge/_part_/master/demo/repl.htm
 
 ## Getting Started
 
+`npm install part`
+
+Or just download and include the build file `/build/src/part.min.js`
+
 See the following examples of how to include \_part\_.
 
 ### Custom namespace;
