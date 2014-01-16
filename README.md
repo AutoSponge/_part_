@@ -23,9 +23,9 @@ the first argument in the function returned by the first invocation.
 map_( function (n) { return n + 1; } )( [1,2,3] ); // [2,3,4]
 ```
 
-See the [docs](http://autosponge.github.io/_part_/master/build/docs/part.html).
+See the [docs](http://autosponge.github.io/_part_/build/docs/part.html).
 
-Try the [live demo](http://autosponge.github.io/_part_/master/demo/repl.html).
+Try the [live demo](http://autosponge.github.io/_part_/demo/repl.html).
 
 ## Getting Started
 
