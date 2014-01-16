@@ -35,7 +35,7 @@ See the following examples of how to include \_part\_.
 
 ```javascript
 // NodeJS example
-var _part_ = require( "./build/src/_part_" );
+var _part_ = require( "_part_" );
 var util = {};
 _part_._borrow( util )( Array.prototype, "reduce" );
 function add( a, b ) { return +a + +b; }
@@ -45,7 +45,7 @@ module.exports = util;
 
 ```html
 <!-- Browser example -->
-<script src="build/_part_.min.js">
+<script src="build/src/_part_.min.js">
 <script>
 (function (global, util) {
   function add( a, b ) { return +a + +b; }
@@ -61,7 +61,7 @@ module.exports = util;
 
 ```javascript
 // NodeJS example
-var _part_ = require( "./build/src/_part_" );
+var _part_ = require( "_part_" );
 _part_._borrow( util )( Array.prototype, "reduce" );
 function add( a, b ) { return +a + +b; }
 var sum = util.reduce_( add );
@@ -69,7 +69,7 @@ var sum = util.reduce_( add );
 
 ```html
 <!-- Browser example -->
-<script src="build/_part_.min.js">
+<script src="build/src/_part_.min.js">
 <script>
 function add( a, b ) { return +a + +b; }
 _part_.borrow( Array.prototype, "reduce" );
@@ -82,7 +82,7 @@ var sum = _part_.reduce_( add );
 
 ```javascript
 // NodeJS example
-var _part_ = require("./build/src/_part_");
+var _part_ = require("_part_");
 var reduce_ = _part_.create_(Array.prototype.reduce);
 function add( a, b ) { return +a + +b; }
 var sum = reduce_( add );
@@ -90,7 +90,7 @@ var sum = reduce_( add );
 
 ```html
 <!-- Browser example -->
-<script src="build/_part_.min.js">
+<script src="build/src/_part_.min.js">
 <script>
 function add( a, b ) { return +a + +b; }
 _part_._borrow( this )( Array.prototype, "reduce" );
