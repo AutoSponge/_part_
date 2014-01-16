@@ -1,5 +1,5 @@
 {
-    "name": "_part_",
+    "name": "part",
     "description": "This micro library encourages functional programming by making native methods available as partially applied functions.",
     "keywords": [
         "functional",
@@ -29,7 +29,7 @@
         "LICENSE",
         "README.md"
     ],
-    "main": "./build/src/_part_",
+    "main": "./build/src/part",
     "engines": {
         "node" : "*"
     },

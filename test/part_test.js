@@ -1,4 +1,4 @@
-var _part_ = require( "../build/src/_part_" );
+var _part_ = require( "../build/src/part" );
 
 exports["_part_ has the correct interface"] = function ( test ) {
 
