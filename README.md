@@ -23,9 +23,9 @@ the first argument in the function returned by the first invocation.
 map_( function (n) { return n + 1; } )( [1,2,3] ); // [2,3,4]
 ```
 
-See the [docs](https://rawgithub.com/AutoSponge/_part_/master/build/docs/part.html).
+See the [docs](http://autosponge.github.io/_part_/master/build/docs/part.html).
 
-Try the [live demo](https://rawgithub.com/AutoSponge/_part_/master/demo/repl.html).
+Try the [live demo](http://autosponge.github.io/_part_/master/demo/repl.html).
 
 ## Getting Started
 
@@ -105,4 +105,5 @@ var sum = reduce_( add );
 
 ## Updates
 
+- 2014-01-10 - Changes to accomodate npm.
 - 2013-12-11 - Added `papply` to the `_part_` namespace.
