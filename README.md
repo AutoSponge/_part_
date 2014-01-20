@@ -124,7 +124,6 @@ var _part_ = require( "part" );
 <!-- Browser example -->
 <script src="build/src/part.min.js">
 <script>
-var _part_ = require( "./node_modules/part/src/part" );
 [
     "concat", "every", "filter", "forEach", "join",
     "lastIndexOf", "map", "push", "pop", "reduce",
