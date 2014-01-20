@@ -33,6 +33,10 @@ Try the [live demo](http://autosponge.github.io/_part_/demo/repl.html).
 
 Or just download and include the build file `/build/src/part.min.js`
 
+>**Note**:
+>
+>As soon as "`node --harmony`" supports the rest and spread operators, you will be able to run the src file instead of the build file.
+
 See the following examples of how to include \_part\_.
 
 ### Custom namespace;
@@ -68,7 +72,7 @@ module.exports = util;
 var _part_ = require( "part" );
 _part_._borrow( util )( Array.prototype, "reduce" );
 function add( a, b ) { return +a + +b; }
-var sum = util.reduce_( add );
+var sum = _part_.reduce_( add );
 ```
 
 ```html
@@ -99,6 +103,33 @@ var sum = reduce_( add );
 function add( a, b ) { return +a + +b; }
 _part_._borrow( this )( Array.prototype, "reduce" );
 var sum = reduce_( add );
+</script>
+
+```
+
+### Global utilities
+
+```javascript
+// NodeJS example
+var _part_ = require( "part" );
+[
+    "concat", "every", "filter", "forEach", "join",
+    "lastIndexOf", "map", "push", "pop", "reduce",
+    "reduceRight", "reverse", "shift", "slice",
+    "some", "sort", "splice", "unshift"
+].forEach( _part_._borrow( global, Array.prototype ) );
+```
+
+```html
+<!-- Browser example -->
+<script src="build/src/part.min.js">
+<script>
+[
+    "concat", "every", "filter", "forEach", "join",
+    "lastIndexOf", "map", "push", "pop", "reduce",
+    "reduceRight", "reverse", "shift", "slice",
+    "some", "sort", "splice", "unshift"
+].forEach( _part_._borrow( this, Array.prototype ) );
 </script>
 
 ```
