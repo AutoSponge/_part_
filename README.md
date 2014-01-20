@@ -111,7 +111,7 @@ var sum = reduce_( add );
 
 ```javascript
 // NodeJS example
-var _part_ = require( "./node_modules/part/src/part" );
+var _part_ = require( "part" );
 [
     "concat", "every", "filter", "forEach", "join",
     "lastIndexOf", "map", "push", "pop", "reduce",
