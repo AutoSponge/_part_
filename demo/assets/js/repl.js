@@ -271,6 +271,20 @@ util.addPartMethods( "each", Array.prototype.forEach );
                 }
             },
             {
+                title: "example: simple pipeline (ES6)",
+                body: function () {
+                    /*
+var _reduce = _part_._create( Array.prototype.reduce );
+var myProcess = _reduce( [
+    (n) => n + 1,
+    (n) => n * 2,
+    (n) => n * n
+], (a, b) => b( a ) );
+myProcess(2);
+                     */
+                }
+            },
+            {
                 title: "example: pipeline (ES6)",
                 body: function () {
                     /*
@@ -280,6 +294,7 @@ var pipeline = reduce_(function (a, b) {
         return b(a(x));
     } || a;
 });
+//compose functions into a single function
 var myProcess = pipeline([
     (n) => n + 1,
     (n) => n * 2,
