@@ -61,6 +61,7 @@ module.exports = util;
   util.sum = util.reduce_( add );
   global.util = util;
 }(this, {}));
+util.sum([1,2,3]); //6
 </script>
 
 ```
@@ -70,9 +71,10 @@ module.exports = util;
 ```javascript
 // NodeJS example
 var _part_ = require( "part" );
-_part_._borrow( util )( Array.prototype, "reduce" );
+_part_.borrow( Array.prototype, "reduce" );
 function add( a, b ) { return +a + +b; }
 var sum = _part_.reduce_( add );
+sum([1,2,3]); //6
 ```
 
 ```html
@@ -82,6 +84,7 @@ var sum = _part_.reduce_( add );
 function add( a, b ) { return +a + +b; }
 _part_.borrow( Array.prototype, "reduce" );
 var sum = _part_.reduce_( add );
+sum([1,2,3]); //6
 </script>
 
 ```
@@ -91,9 +94,11 @@ var sum = _part_.reduce_( add );
 ```javascript
 // NodeJS example
 var _part_ = require("part");
+//not global
 var reduce_ = _part_.create_(Array.prototype.reduce);
 function add( a, b ) { return +a + +b; }
 var sum = reduce_( add );
+sum([1,2,3]); //6
 ```
 
 ```html
@@ -103,6 +108,7 @@ var sum = reduce_( add );
 function add( a, b ) { return +a + +b; }
 _part_._borrow( this )( Array.prototype, "reduce" );
 var sum = reduce_( add );
+sum([1,2,3]); //6
 </script>
 
 ```
@@ -117,6 +123,7 @@ var _part_ = require( "part" );
     "lastIndexOf", "map", "push", "pop", "reduce",
     "reduceRight", "reverse", "shift", "slice",
     "some", "sort", "splice", "unshift"
+//global
 ].forEach( _part_._borrow( global, Array.prototype ) );
 ```
 
